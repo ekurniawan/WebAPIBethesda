@@ -11,6 +11,12 @@ Namespace Controllers
             Return kategoriDal.GetAll()
         End Function
 
+        <Route("api/Kategori/Hello")>
+        <HttpGet>
+        Public Function Hello() As String
+            Return "Hello World !"
+        End Function
+
         ' GET: api/Kategori/5
 
         Public Function GetValue(ByVal id As Integer) As Kategori
@@ -41,8 +47,14 @@ Namespace Controllers
         End Function
 
         ' DELETE: api/Kategori/5
-        Public Sub DeleteValue(ByVal id As Integer)
-
-        End Sub
+        Public Function DeleteValue(ByVal id As Integer) As IHttpActionResult
+            Dim kategoriDal As New KategoriDAL
+            Try
+                kategoriDal.Delete(id)
+                Return Ok("Berhasil delete data")
+            Catch ex As Exception
+                Return BadRequest(ex.Message)
+            End Try
+        End Function
     End Class
 End Namespace
