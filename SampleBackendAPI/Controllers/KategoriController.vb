@@ -12,20 +12,33 @@ Namespace Controllers
         End Function
 
         ' GET: api/Kategori/5
+
         Public Function GetValue(ByVal id As Integer) As Kategori
             Dim kategoriDal As New KategoriDAL
             Return kategoriDal.GetById(id)
         End Function
 
         ' POST: api/Kategori
-        Public Sub PostValue(<FromBody()> ByVal value As String)
-
-        End Sub
+        Public Function PostValue(_kategori As Kategori) As IHttpActionResult
+            Dim kategoriDal As New KategoriDAL
+            Try
+                kategoriDal.Create(_kategori)
+                Return Ok("Berhasil menambahkan data")
+            Catch ex As Exception
+                Return BadRequest(ex.Message)
+            End Try
+        End Function
 
         ' PUT: api/Kategori/5
-        Public Sub PutValue(ByVal id As Integer, <FromBody()> ByVal value As String)
-
-        End Sub
+        Public Function PutValue(ByVal id As Integer, _kategori As Kategori) As IHttpActionResult
+            Dim kategoriDal As New KategoriDAL
+            Try
+                kategoriDal.Update(_kategori)
+                Return Ok("Berhasil update data")
+            Catch ex As Exception
+                Return BadRequest(ex.Message)
+            End Try
+        End Function
 
         ' DELETE: api/Kategori/5
         Public Sub DeleteValue(ByVal id As Integer)

@@ -77,4 +77,41 @@ Public Class KategoriDAL
         End Using
     End Function
 
+    Public Function Update(_kategori As Kategori) As Integer
+        Using conn As New SqlConnection(GetConnStr())
+            Dim strSql = "update Kategori set NamaKategori=@NamaKategori where KategoriId=@KategoriId"
+            cmd = New SqlCommand(strSql, conn)
+            cmd.Parameters.AddWithValue("@NamaKategori", _kategori.NamaKategori)
+            cmd.Parameters.AddWithValue("@KategoriId", _kategori.KategoriId)
+            Try
+                conn.Open()
+                Dim result = cmd.ExecuteNonQuery()
+                Return result
+            Catch ex As Exception
+                Throw New Exception("Error : " & ex.Message)
+            Finally
+                cmd.Dispose()
+                conn.Close()
+            End Try
+        End Using
+    End Function
+
+    Public Function Delete(id As Integer) As Integer
+        Using conn As New SqlConnection(GetConnStr())
+            Dim strSql = "delete from Kategori where KategoriId=@KategoriId"
+            cmd = New SqlCommand(strSql, conn)
+            cmd.Parameters.AddWithValue("@KategoriId", id)
+            Try
+                conn.Open()
+                Dim result = cmd.ExecuteNonQuery()
+                Return result
+            Catch ex As Exception
+                Throw New Exception("Error : " & ex.Message)
+            Finally
+                cmd.Dispose()
+                conn.Close()
+            End Try
+        End Using
+    End Function
+
 End Class
