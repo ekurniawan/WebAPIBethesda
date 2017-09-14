@@ -40,7 +40,7 @@ Public Class KategoriDAL
             Dim strSql = "select * from Kategori where KategoriId=@KategoriId"
             cmd = New SqlCommand(strSql, conn)
             cmd.Parameters.AddWithValue("@KategoriId", id)
-
+            conn.Open()
             Dim dr As SqlDataReader = cmd.ExecuteReader()
             If dr.HasRows Then
                 While dr.Read()
@@ -53,6 +53,27 @@ Public Class KategoriDAL
             conn.Close()
 
             Return kat
+        End Using
+    End Function
+
+    Public Function Create(_kategori As Kategori) As Integer
+        Using conn As New SqlConnection(GetConnStr)
+            Dim strSql = "insert into Kategori(NamaKategori) values(@NamaKategori)"
+            cmd = New SqlCommand(strSql, conn)
+            cmd.Parameters.AddWithValue("@NamaKategori", _kategori.NamaKategori)
+
+            Try
+                conn.Open()
+                Dim result = cmd.ExecuteNonQuery()
+                Return result
+            Catch sqlEx As SqlException
+                Throw New Exception("Error " & sqlEx.Message)
+            Catch ex As Exception
+                Throw New Exception("Error " & ex.Message)
+            Finally
+                cmd.Dispose()
+                conn.Close()
+            End Try
         End Using
     End Function
 
